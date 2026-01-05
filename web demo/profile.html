@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile | QuantAI</title>
+    
+    <!-- Fonts and Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link href="css/tabler.min.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    
+    <style>
+        /* Profile Specific Styles */
+        .profile-header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: 600;
+            border: 4px solid white;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+            flex-shrink: 0;
+            z-index: 1;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .profile-title {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Information Cards */
+        .info-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+        
+        .info-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .info-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Skill Tags */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .skill-tag {
+            padding: 0.5rem 1rem;
+            background: var(--background-color);
+            color: var(--text-secondary);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .skill-tag i {
+            color: var(--primary-color);
+        }
+        
+        /* Progress Bars */
+        .progress-item {
+            margin-bottom: 1rem;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--background-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+        }
+        
+        /* Code File Cards */
+        .code-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .code-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .code-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .code-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .code-badges {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .code-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .code-desc {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .code-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .code-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Active Strategies */
+        .strategy-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .strategy-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .strategy-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .strategy-table tbody tr:hover {
+            background: var(--hover-color);
+        }
+        
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* License Selection */
+        .license-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .license-option {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .license-option:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .license-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .license-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .license-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .license-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Full Screen Navigation Bar -->
+    <nav class="navbar-full">
+        <div class="navbar-container">
+            <!-- Brand Logo -->
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-chart-line"></i>
+                <span>QuantAI</span>
+            </a>
+            
+            <!-- Main Navigation Menu -->
+            <div class="navbar-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="strategies.html" class="nav-link">
+                    <i class="fas fa-robot"></i>
+                    <span>Strategies</span>
+                </a>
+                <a href="ai-assistant.html" class="nav-link">
+                    <i class="fas fa-comments"></i>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="profile.html" class="nav-link active">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+            
+            <!-- Right Controls -->
+            <div class="navbar-controls">
+                <!-- Day/Night Mode Toggle -->
+                <div class="theme-toggle" id="themeToggle">
+                    <div class="theme-icon sun-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="theme-icon moon-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+                
+                <!-- User Information -->
+                <div class="user-profile" onclick="toggleUserMenu()">
+                    <div class="user-avatar">
+                        Zhang
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Zhang Wei</div>
+                        <div class="user-role">Gold Trader</div>
+                    </div>
+                    <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                Zhang
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-name">Zhang Wei</h1>
+                <div class="profile-title">
+                    <i class="fas fa-medal text-warning"></i> Gold Quantitative Trader · 
+                    <i class="fas fa-map-marker-alt ms-3"></i> Shanghai · 
+                    <i class="fas fa-calendar-alt ms-3"></i> Joined: August 2023
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Total Strategies</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value text-success">86%</div>
+                        <div class="stat-label">Win Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">1,245</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">892</div>
+                        <div class="stat-label">Code Stars</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="editProfile()">
+                <i class="fas fa-edit"></i> Edit Profile
+            </button>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Left: Personal Information -->
+            <div>
+                <!-- Personal Information Card -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <div class="info-icon bg-primary-light">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h3 class="info-title">Personal Information</h3>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="mb-2">
+                            <div class="text-muted small mb-1">Trading Style</div>
+                            <div class="skills-container">
+                                <span class="skill-tag">
+                                    <i class="fas fa-chart-line"></i> Trend Following
+                                </span>
+                                <span class="skill-tag">
+                                    <i class="fas fa-wave-square"></i> Mean Reversion
+                                </span>
+                                <span class="skill-tag">
+                                    <i class="fas fa-arrows-alt-h"></i> Arbitrage Trading
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <div class="text-muted small mb-1">Risk Preference</div>
+                            <div class="progress-item">
+                                <div class="progress-label">
+                                    <span>Conservative</span>
+                                    <span>30%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-muted small mb-1">Expertise Areas</div>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-1">
+                                    <i class="fas fa-check text-success me-2"></i>Python Quantitative Development
+                                </li>
+                                <li class="mb-1">
+                                    <i class="fas fa-check text-success me-2"></i>Machine Learning Strategies
+                                </li>
+                                <li class="mb-1">
+                                    <i class="fas fa-check text-success me-2"></i>Backtest Optimization
+                                </li>
+                                <li class="mb-0">
+                                    <i class="fas fa-check text-success me-2"></i>Risk Management
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Code Card -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <div class="info-icon bg-success-light">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="info-title">Upload Code</h3>
+                    </div>
+                    
+                    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="mb-2">
+                            <div class="fw-bold mb-1">Click or drag files to upload</div>
+                            <div class="text-muted small">Supports .py, .ipynb, .md files</div>
+                        </div>
+                        <input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="text-muted small mb-2">Select License</div>
+                        <div class="license-options">
+                            <div class="license-option selected" onclick="selectLicense('mit')">
+                                <div class="license-icon">
+                                    <i class="fab fa-creative-commons"></i>
+                                </div>
+                                <div class="license-name">MIT License</div>
+                                <div class="license-desc">Open source sharing</div>
+                            </div>
+                            <div class="license-option" onclick="selectLicense('private')">
+                                <div class="license-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <div class="license-name">Private</div>
+                                <div class="license-desc">Only visible to you</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary w-100" onclick="uploadFile()">
+                        <i class="fas fa-upload"></i> Upload File
+                    </button>
+                </div>
+
+                <!-- Active Strategies Card -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <div class="info-icon bg-warning-light">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h3 class="info-title">Active Strategies</h3>
+                    </div>
+                    
+                    <table class="strategy-table">
+                        <thead>
+                            <tr>
+                                <th>Strategy Name</th>
+                                <th>Status</th>
+                                <th>Return</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge-info status-badge me-2">AI</span>
+                                        <span>Neural Network Prediction</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge badge-success">Running</span></td>
+                                <td class="text-success fw-bold">+18.5%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge-info status-badge me-2">MR</span>
+                                        <span>Mean Reversion</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge badge-success">Running</span></td>
+                                <td class="text-success fw-bold">+12.3%</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge-info status-badge me-2">PA</span>
+                                        <span>Pairs Trading</span>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge badge-warning">Paused</span></td>
+                                <td class="text-danger fw-bold">-2.1%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right: Code Repository -->
+            <div>
+                <!-- Code Repository Header -->
+                <div class="info-card">
+                    <div class="info-header">
+                        <div class="info-icon bg-purple-light">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <h3 class="info-title">My Code Repository</h3>
+                        <div style="margin-left: auto;">
+                            <select class="filter-btn" onchange="filterCode(this.value)">
+                                <option value="all">All</option>
+                                <option value="python">Python</option>
+                                <option value="jupyter">Jupyter</option>
+                                <option value="popular">Popular</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code File List -->
+                <div class="code-card" onclick="openCodeFile(1)">
+                    <div class="code-header">
+                        <div class="code-title">
+                            <div class="code-icon bg-primary-light">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <span>neural_trading_strategy.py</span>
+                        </div>
+                        <div class="code-badges">
+                            <span class="code-badge badge-info">Python</span>
+                            <span class="code-badge badge-success">MIT</span>
+                        </div>
+                    </div>
+                    <div class="code-desc">
+                        LSTM-based stock trading strategy, includes complete backtest framework and real-time trading interface, supports multi-factor analysis and risk management.
+                    </div>
+                    <div class="code-footer">
+                        <div class="code-stats">
+                            <div class="stat">
+                                <i class="fas fa-star text-warning"></i>
+                                <span>248</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download"></i>
+                                <span>156</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v2.1.0</span>
+                            </div>
+                        </div>
+                        <div>
+                            <small class="text-muted">
+                                <i class="fas fa-history me-1"></i>Updated 2 hours ago
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-card" onclick="openCodeFile(2)">
+                    <div class="code-header">
+                        <div class="code-title">
+                            <div class="code-icon bg-success-light">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <span>mean_reversion_multifactor.py</span>
+                        </div>
+                        <div class="code-badges">
+                            <span class="code-badge badge-info">Python</span>
+                            <span class="code-badge badge-success">MIT</span>
+                        </div>
+                    </div>
+                    <div class="code-desc">
+                        Multi-factor mean reversion strategy for A-share market, includes value, quality, momentum and other factor models with dynamic weight adjustment.
+                    </div>
+                    <div class="code-footer">
+                        <div class="code-stats">
+                            <div class="stat">
+                                <i class="fas fa-star text-warning"></i>
+                                <span>156</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download"></i>
+                                <span>89</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v1.5.2</span>
+                            </div>
+                        </div>
+                        <div>
+                            <small class="text-muted">
+                                <i class="fas fa-history me-1"></i>Updated 1 day ago
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-card" onclick="openCodeFile(3)">
+                    <div class="code-header">
+                        <div class="code-title">
+                            <div class="code-icon bg-warning-light">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <span>pair_trading_arbitrage.ipynb</span>
+                        </div>
+                        <div class="code-badges">
+                            <span class="code-badge badge-warning">Jupyter</span>
+                            <span class="code-badge badge-success">MIT</span>
+                        </div>
+                    </div>
+                    <div class="code-desc">
+                        Statistical arbitrage strategy, includes cointegration analysis, pair selection, risk management modules, suitable for futures and cryptocurrency markets.
+                    </div>
+                    <div class="code-footer">
+                        <div class="code-stats">
+                            <div class="stat">
+                                <i class="fas fa-star text-warning"></i>
+                                <span>89</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download"></i>
+                                <span>42</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v1.2.0</span>
+                            </div>
+                        </div>
+                        <div>
+                            <small class="text-muted">
+                                <i class="fas fa-history me-1"></i>Updated 3 days ago
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-card" onclick="openCodeFile(4)">
+                    <div class="code-header">
+                        <div class="code-title">
+                            <div class="code-icon bg-danger-light">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <span>risk_management_framework.md</span>
+                        </div>
+                        <div class="code-badges">
+                            <span class="code-badge badge-secondary">Markdown</span>
+                            <span class="code-badge badge-success">MIT</span>
+                        </div>
+                    </div>
+                    <div class="code-desc">
+                        Quantitative risk management framework design and implementation documentation, detailed introduction to VaR, CVaR, stress testing and other risk management methods.
+                    </div>
+                    <div class="code-footer">
+                        <div class="code-stats">
+                            <div class="stat">
+                                <i class="fas fa-star text-warning"></i>
+                                <span>312</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-download"></i>
+                                <span>245</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-code-branch"></i>
+                                <span>v3.0.0</span>
+                            </div>
+                        </div>
+                        <div>
+                            <small class="text-muted">
+                                <i class="fas fa-history me-1"></i>Updated 1 week ago
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="text-muted small">
+                        Showing 4 code files, total 24
+                    </div>
+                    <div class="btn-group">
+                        <button class="filter-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="filter-btn active">1</button>
+                        <button class="filter-btn">2</button>
+                        <button class="filter-btn">3</button>
+                        <button class="filter-btn">4</button>
+                        <button class="filter-btn">5</button>
+                        <button class="filter-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Open Source Contribution Statistics -->
+        <div class="info-card">
+            <div class="info-header">
+                <div class="info-icon bg-success-light">
+                    <i class="fab fa-github"></i>
+                </div>
+                <h3 class="info-title">Open Source Contributions</h3>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3 text-center mb-3">
+                    <div class="stat-value text-primary">8</div>
+                    <div class="stat-label">Open Source Strategies</div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                    <div class="stat-value text-success">1,245</div>
+                    <div class="stat-label">Total Stars</div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                    <div class="stat-value text-warning">156</div>
+                    <div class="stat-label">Code Citations</div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                    <div class="stat-value">89%</div>
+                    <div class="stat-label">Code Rating</div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-2">
+                <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    You have contributed 8 strategies to the open source community, received 1,245 stars, thank you for your contributions!
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <i class="fas fa-chart-line"></i>
+                <span>QuantAI Platform</span>
+            </div>
+            <div class="footer-info">
+                <div>© 2024 QuantAI · Profile Demo</div>
+                <div class="small mt-1">
+                    <i class="fas fa-code me-1"></i>8 Strategies Open Sourced · 
+                    <i class="fas fa-star ms-2 me-1"></i>Total 1,245 Stars · 
+                    <i class="fas fa-users ms-2 me-1"></i>892 Followers
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Theme Management
+        let currentTheme = localStorage.getItem('quantai-theme') || 'light';
+        let selectedLicense = 'mit';
+        let selectedFile = null;
+        
+        // Initialize Theme
+        function initTheme() {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeToggle();
+        }
+        
+        // Toggle Theme
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('quantai-theme', currentTheme);
+            updateThemeToggle();
+            showNotification(`Switched to ${currentTheme === 'light' ? 'Light' : 'Dark'} mode`);
+        }
+        
+        // Update Theme Toggle Button Status
+        function updateThemeToggle() {
+            const toggle = document.getElementById('themeToggle');
+            if (currentTheme === 'dark') {
+                toggle.style.background = 'rgba(255, 255, 255, 0.3)';
+            } else {
+                toggle.style.background = 'rgba(255, 255, 255, 0.2)';
+            }
+        }
+        
+        // Edit Profile
+        function editProfile() {
+            showNotification('Edit profile feature under development...', 'info');
+        }
+        
+        // Handle File Selection
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                selectedFile = file;
+                showNotification(`Selected file: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`, 'success');
+            }
+        }
+        
+        // Select License
+        function selectLicense(license) {
+            selectedLicense = license;
+            document.querySelectorAll('.license-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.license-option').classList.add('selected');
+        }
+        
+        // Upload File
+        function uploadFile() {
+            if (!selectedFile) {
+                showNotification('Please select a file to upload first', 'warning');
+                return;
+            }
+            
+            showNotification(`Uploading ${selectedFile.name}...`, 'info');
+            
+            // Simulate upload process
+            setTimeout(() => {
+                showNotification('File uploaded successfully! Adding to code repository...', 'success');
+                
+                // Simulate adding to repository
+                setTimeout(() => {
+                    showNotification(`File added to code repository, using ${selectedLicense === 'mit' ? 'MIT' : 'Private'} license`, 'success');
+                    selectedFile = null;
+                    document.getElementById('fileInput').value = '';
+                }, 1500);
+            }, 2000);
+        }
+        
+        // Open Code File
+        function openCodeFile(id) {
+            const fileNames = [
+                'neural_trading_strategy.py',
+                'mean_reversion_multifactor.py', 
+                'pair_trading_arbitrage.ipynb',
+                'risk_management_framework.md'
+            ];
+            
+            showNotification(`Opening ${fileNames[id-1]}...`, 'info');
+            
+            // Simulate opening file
+            setTimeout(() => {
+                showNotification('File opened in code editor', 'success');
+            }, 1000);
+        }
+        
+        // Filter Code
+        function filterCode(filter) {
+            const filters = {
+                'all': 'All',
+                'python': 'Python',
+                'jupyter': 'Jupyter',
+                'popular': 'Popular'
+            };
+            showNotification(`Filtered ${filters[filter]} code`, 'info');
+        }
+        
+        // Toggle User Menu
+        function toggleUserMenu() {
+            showNotification('User menu feature under development...', 'info');
+        }
+        
+        // Show Notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = `
+                top: 90px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                border: none;
+                border-radius: 12px;
+                animation: slideIn 0.3s ease;
+                background: ${currentTheme === 'dark' ? '#1e293b' : 'white'};
+                color: ${currentTheme === 'dark' ? '#f1f5f9' : '#1e293b'};
+                border-left: 4px solid ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : type === 'danger' ? '#ef4444' : '#3b82f6'};
+            `;
+            
+            const icons = {
+                'success': { icon: 'check-circle', color: '#10b981' },
+                'warning': { icon: 'exclamation-triangle', color: '#f59e0b' },
+                'danger': { icon: 'times-circle', color: '#ef4444' },
+                'info': { icon: 'info-circle', color: '#3b82f6' }
+            };
+            
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <i class="fas fa-${icons[type].icon}" style="color: ${icons[type].color}"></i>
+                    </div>
+                    <div>${message}</div>
+                </div>
+                <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+        
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            
+            // Theme Toggle Event
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Card Hover Effects
+            document.querySelectorAll('.code-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                    this.style.boxShadow = '0 8px 30px rgba(59, 130, 246, 0.15)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // License Option Click Events
+            document.querySelectorAll('.license-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.license-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedLicense = this.querySelector('.license-name').textContent.includes('MIT') ? 'mit' : 'private';
+                    showNotification(`Selected ${selectedLicense === 'mit' ? 'MIT License' : 'Private License'}`, 'success');
+                });
+            });
+            
+            // Upload Area Drag & Drop Functionality
+            const uploadArea = document.querySelector('.upload-area');
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-color)';
+                this.style.background = 'rgba(59, 130, 246, 0.1)';
+            });
+            
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--border-color)';
+                this.style.background = '';
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-color)';
+                this.style.background = '';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect({ target: { files: files } });
+                }
+            });
+            
+            // Strategy Table Row Click Events
+            document.querySelectorAll('.strategy-table tbody tr').forEach(row => {
+                row.addEventListener('click', function() {
+                    const strategyName = this.querySelector('td:first-child span:last-child').textContent;
+                    showNotification(`Viewing strategy: ${strategyName}`, 'info');
+                });
+            });
+            
+            // Pagination Button Click Events
+            document.querySelectorAll('.btn-group .filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.btn-group .filter-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    if (this.textContent.trim() !== '<' && this.textContent.trim() !== '>') {
+                        showNotification(`Switched to page ${this.textContent}`, 'info');
+                    }
+                });
+            });
+            
+            // Navigation Menu Highlight
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === 'profile.html') {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Initialize Progress Bar Animations
+            function initProgressBars() {
+                document.querySelectorAll('.progress-fill').forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(() => {
+                        bar.style.transition = 'width 1.5s ease-in-out';
+                        bar.style.width = width;
+                    }, 300);
+                });
+            }
+            
+            // Initialize Statistics Counter Animations
+            function initCounterAnimations() {
+                const counters = document.querySelectorAll('.stat-value');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
+                    const suffix = counter.textContent.replace(/[0-9]/g, '');
+                    let current = 0;
+                    const increment = target / 100;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = target + suffix;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current) + suffix;
+                        }
+                    }, 20);
+                });
+            }
+            
+            // Page Load Animations
+            setTimeout(() => {
+                document.querySelectorAll('.profile-header, .info-card, .code-card').forEach((element, index) => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(20px)';
+                    element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+                
+                initProgressBars();
+                initCounterAnimations();
+            }, 500);
+            
+            // Keyboard Shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+U Upload File
+                if (e.ctrlKey && e.key === 'u') {
+                    e.preventDefault();
+                    document.getElementById('fileInput').click();
+                }
+                
+                // Ctrl+E Edit Profile
+                if (e.ctrlKey && e.key === 'e') {
+                    e.preventDefault();
+                    editProfile();
+                }
+                
+                // Escape Close Notifications
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.alert').forEach(alert => {
+                        alert.remove();
+                    });
+                }
+            });
+            
+            // Responsive Adjustments
+            function handleResize() {
+                const contentGrid = document.querySelector('.content-grid');
+                if (window.innerWidth <= 1200) {
+                    contentGrid.style.gridTemplateColumns = '1fr';
+                } else {
+                    contentGrid.style.gridTemplateColumns = '1fr 2fr';
+                }
+            }
+            
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            
+            // Copy Code Link Functionality
+            document.querySelectorAll('.code-card').forEach(card => {
+                card.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    const codeName = this.querySelector('.code-title span').textContent;
+                    const dummy = document.createElement('textarea');
+                    document.body.appendChild(dummy);
+                    dummy.value = `https://quantai.example.com/code/${encodeURIComponent(codeName)}`;
+                    dummy.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(dummy);
+                    showNotification(`Copied ${codeName} link to clipboard`, 'success');
+                });
+            });
+            
+            // Show Page Load Complete
+            setTimeout(() => {
+                showNotification('Profile loaded successfully, welcome back!', 'success');
+            }, 1000);
+        });
+    </script>
+    
+    <style>
+        /* Animation Definitions */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Status Badge Style Extensions */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .badge-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .badge-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .badge-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        /* Button Style Extensions */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--card-background);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .navbar-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        /* Dark Mode Adaptation */
+        [data-theme="dark"] {
+            --background-color: #0f172a;
+            --card-background: #1e293b;
+            --border-color: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --primary-color: #3b82f6;
+            --hover-color: rgba(148, 163, 184, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+        
+        [data-theme="light"] {
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --primary-color: #3b82f6;
+            --hover-color: rgba(59, 130, 246, 0.05);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</body>
+</html>
